@@ -1,56 +1,48 @@
-package com.qa.banking;
+package com.johnmeaney.online.bank;
 import java.util.*;
 
-public class Account {
-	private String sortCode;
+public abstract class Account {
+
 	private String accountNumber;
-	private double balance;
-	private Map<Integer, Transaction> transactions = new HashMap<>();
+	protected double balance;
+	protected List<Transaction> transactions = new ArrayList<>();
+	private Customer accountHolder;
 	
-	public Account(String sortCode, String accountNumber) {
-		this.sortCode = sortCode;
+	public Account(String accountNumber, Customer accountHolder) {
+		super();
 		this.accountNumber = accountNumber;
-	}
-	
-	public void deposit(double amount) {
-		balance += amount;
-		Integer key = Transaction.getNextId();
-		Transaction valueObject = new Transaction(amount); 
-		transactions.put(key, valueObject);
-	}
-	
-	public void withdraw(double amount) throws Exception {
-		if (amount <= balance) {
-			balance -= amount;
-			Integer key = Transaction.getNextId();
-			Transaction valueObject = new Transaction(-amount); 
-			transactions.put(key, valueObject);
-		} else {
-			throw new Exception("Not enough money");
-		}
-	}
-
-	public double getBalance() {
-		return balance;
-	}
-
-	public String getSortCode() {
-		return sortCode;
-	}
-
-	public void setSortCode(String sortCode) {
-		this.sortCode = sortCode;
+		this.accountHolder = accountHolder;
 	}
 
 	public String getAccountNumber() {
 		return accountNumber;
 	}
 
-	public void setAccountNumber(String accountNumber) {
-		this.accountNumber = accountNumber;
+	public double getBalance() {
+		return balance;
 	}
 	
-	public Map<Integer, Transaction> getTransactions(){
+	public Customer getAccountHolder() {
+		return accountHolder;
+	}
+
+	public void setAccountHolder(Customer accountHolder) {
+		this.accountHolder = accountHolder;
+	}
+
+	public void withdraw(double amount) throws java.io.IOException {
+		if (amount <= balance) {
+			balance -= amount;
+			transactions.add(new Transaction(-amount));
+		}
+	}
+
+	public void deposit(double amount) throws RuntimeException {
+		balance += amount;
+		transactions.add(new Transaction(amount));
+	}
+	
+	public List<Transaction> getTransactions(){
 		return transactions;
 	}
 	

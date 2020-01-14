@@ -1,35 +1,26 @@
-package com.qa.banking;
+package com.johnmeaney.online.bank;
 
 public class Transaction {
-	private Integer id;
+	
+	private int id;
 	private double amount;
-	private static int nextId = 1000;
 	
-	public static Integer getNextId() {
-		return nextId;
-	}
+	private static int lastUsedId = 1000;
 	
-	public Transaction(double a) {
-		this.id = nextId++;
-		this.amount = a;
+	public static int getLastUsedId() {
+		return lastUsedId;
 	}
-
 	public int getId() {
 		return id;
 	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public double getAmount() {
 		return amount;
 	}
-
-	public void setAmount(double amount) {
+	public Transaction(double amount) {
+		id = ++lastUsedId;
 		this.amount = amount;
 	}
 	
 	
-
+	
 }
